@@ -140,6 +140,17 @@ class User extends config implements operations {
     public function delete() {
         
     }
+
+    public function checkcode() {
+        $query = "SELECT * FROM users WHERE email = '$this->email' AND code = '$this->code'";
+        return $this->runDQL($query);
+    }
+
+    public function verfiedUser() {
+        $query = "UPDATE users SET email_verified_at = NOW(), status = 1 WHERE email = '$this->email'";
+
+        return $this->runDML($query);
+        }
 }
 
 

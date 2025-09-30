@@ -71,7 +71,7 @@ $mail = new mail($_POST['email'],$subject,$body);
 
 $mailResult = $mail->send();
 if($mailResult){
-
+$_SESSION['email'] = $_POST['email'];
 header("location:check-code.php");
 }else{
     $error = "<div class='alert alert-danger'>Error Try Again</div>";
@@ -140,6 +140,8 @@ header("location:check-code.php");
                 </div>
             </div>
         </div>
+        
 <?php
 include_once 'layouts/footer.php';
 include_once 'layouts/footer-scripts.php';
+?>
