@@ -17,14 +17,17 @@ if($_POST){
         $userObject->setCode($_POST['code']);
         $result = $userObject->checkcode();
         if($result){
-           $resultVerfied = $userObject->verfiedUser();
-              if($resultVerfied){
+            $userObject->setStatus(1);
+            date_default_timezone_set("Africa/Cairo");
+            $userObject->setEmailVerifiedAt(date("Y-m-d h:i:s"));
+            $updateResult = $userObject->verfiedUser();
+              if($updateResult){
                 header("location:login.php");
         }else{
-            $error['worng'] = "<div class='alert alert-danger'>worng Code</div>";
+           $error['someting'] = "<div class='alert alert-danger'>someting went rong</div>";
         }
     }
-
+    }
 }
 ?>
         <div class="login-register-area ptb-100">

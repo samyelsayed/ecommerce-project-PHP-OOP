@@ -147,7 +147,7 @@ class User extends config implements operations {
     }
 
     public function verfiedUser() {
-        $query = "UPDATE users SET email_verified_at = NOW(), status = 1 WHERE email = '$this->email'";
+        $query = "UPDATE users SET email_verfied_at = '$this->email_verified_at', status = $this->status WHERE email = '$this->email'";
 
         return $this->runDML($query);
         }
