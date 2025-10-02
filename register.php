@@ -1,6 +1,7 @@
 <?php
 $title = "Register"; 
 include_once 'layouts/header.php';
+include_once 'layouts/nav.php';
 include_once 'layouts/breadcrumb.php';
 include_once 'app/requests/validation.php';
 include_once 'app/models/User.php';

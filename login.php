@@ -19,16 +19,16 @@ include_once 'layouts/breadcrumb.php';
                                 <div id="lg1" class="tab-pane active">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form   method="post">
-                                                <input type="text" name="user-name" placeholder="Username">
-                                                <input type="password" name="user-password" placeholder="Password">
+                                            <form  action="app/post/login.php" method="post">
+                                                <input type="email" name="email" placeholder="Email">
+                                                <input type="password" name="password" placeholder="Password">
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <input type="checkbox">
                                                         <label>Remember me</label>
                                                         <a href="#">Forgot Password?</a>
                                                     </div>
-                                                    <button type="submit"><span>Login</span></button>
+                                                    <button type="submit" name="login"><span>Login</span></button>
                                                 </div>
                                             </form>
                                         </div>
