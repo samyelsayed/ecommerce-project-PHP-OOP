@@ -151,6 +151,13 @@ class User extends config implements operations {
 
         return $this->runDML($query);
         }
+
+
+      public function login() {
+        $query = "SELECT * FROM users WHERE email = '$this->email' AND password = '$this->password'";
+        return $this->runDQL($query);
+    }
+    
 }
 
 

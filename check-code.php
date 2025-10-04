@@ -22,6 +22,7 @@ if($_POST){
             $userObject->setEmailVerifiedAt(date("Y-m-d h:i:s"));
             $updateResult = $userObject->verfiedUser();
               if($updateResult){
+                unset($_SESSION['email']);
                 header("location:login.php");
         }else{
            $error['someting'] = "<div class='alert alert-danger'>someting went rong</div>";
