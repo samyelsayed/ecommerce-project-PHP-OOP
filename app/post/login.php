@@ -15,10 +15,12 @@ if(!isset($_POST['login'])){
 // كذالك هاستخدم الميود بتاع الريجكس و خزنه في رايميل ريجيكس ريزلت واديها الباترن  
 
 $emailValidation = new Validation('email',$_POST['email']);
-$_SESSION['email_required'] = $emailValidation->required();
-if(empty($_SESSION['email_required'])){
+$emailRequiredRuslt = $emailValidation->required();
+if(empty($emailRequiredRuslt)){
 $emailPattern = "/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/";
-$_SESSION['email_regex'] = $emailValidation->regex($emailPattern);
+$_SESSION['errors']['email']['regex'] = $emailValidation->regex($emailPattern);
+}else{
+    $_SESSION['errors']['email']['required'] = $emailRequiredRuslt
 }
 //هبدا اخد اوبجت من  الكلاس بتاع الفلديشن واسميه باسورد فالديشن واديلو النيم و الفاليو
 //2 هاستخدم من الاوبجت الميود بتاع الاميل ريكويريد و خزنه في باسورد ريكويرد ريزلت
@@ -26,10 +28,10 @@ $_SESSION['email_regex'] = $emailValidation->regex($emailPattern);
 
 
 $passwordValidation = new Validation('password',$_POST['password']);
-$_SESSION['password_required'] = $passwordValidation->required();
-if(empty($_SESSION['password_required'])){
+$_SESSION['errors']['password']['required'] = $passwordValidation->required();
+if(empty($_SESSION['errors']['password']['required'])){
 $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/";
-$_SESSION['password_regex'] = $passwordValidation->regex($passwordPattern);
+$_SESSION['errors']['password']['regex'] = $passwordValidation->regex($passwordPattern);
 }
 //بإذن الله هكمل من اول ما خزنهم في متغيرات وخزن الايرور فقط في السيشن الايرور فقط مش كله
 
@@ -46,7 +48,11 @@ $result = $userObject->login();
 if($result){
     print_r($result);die;
 
-    }}
+    }else{
+        $_SESSION['login_error'] = "Invalid Email or Password";
+    }
+
+}
     header("location:../../login.php");
 //بعدين هاخد اوبجكت من كلاس اليوزر  وبعدين ابدااعطيله ال اميل و الباسورد
 //بعدين اعمل كويريري علشان يبحث عن الاميل و الباسود دول هل هما جوا الداتا بيز ولا لا
