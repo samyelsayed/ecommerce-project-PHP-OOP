@@ -21,18 +21,17 @@ include_once 'layouts/breadcrumb.php';
                                         <div class="login-register-form">
                                             <form  action="app/post/login.php" method="post">
                                                 <input type="email" name="email" placeholder="Email">
-                                                <?php if(!empty($_SESSION['email_required'])){
-                                                    echo "<p class='alert alert-danger'>".$_SESSION['email_required']."</p>";}
-                                                    if(!empty($_SESSION['email_regex'])){
-                                                    echo "<p class='alert alert-danger'>".$_SESSION['email_regex']."</p>";
-                                                }  ?>
+                                                <?php if(!empty($_SESSION['errors']['email'])){
+                                                 foreach($_SESSION['errors']['email']as $key => $value) {
+                                                    echo "<p class='alert alert-danger'>".$value."</p>";
+                                                 }
+                                                  }?>
                                                 <input type="password" name="password" placeholder="Password">
-                                                <?php if(!empty($_SESSION['password_required'])){
-                                                    echo "<p class='alert alert-danger'>".$_SESSION['password_required']."</p>";}
-                                                    if(!empty($_SESSION['password_regex'])){
-                                                    echo "<p class='alert alert-danger'>".$_SESSION['password_regex']."</p>";
-                                                  
-                                                }  ?>
+                                                <?php  if(!empty($_SESSION['errors']['password'])){
+                                                 foreach($_SESSION['errors']['password']as $key => $value) {
+                                                    echo "<p class='alert alert-danger'>".$value."</p>";
+                                                 }
+                                                  } ?>
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <input type="checkbox">
@@ -54,8 +53,5 @@ include_once 'layouts/breadcrumb.php';
   <?php
 include_once 'layouts/footer.php';
 include_once 'layouts/footer-scripts.php';
-unset($_SESSION['email_required']);
-unset($_SESSION['email_regex']);
-unset($_SESSION['password_required']);
-unset($_SESSION['password_regex']);
+
 ?>

@@ -17,10 +17,13 @@ if(!isset($_POST['login'])){
 $emailValidation = new Validation('email',$_POST['email']);
 $emailRequiredRuslt = $emailValidation->required();
 if(empty($emailRequiredRuslt)){
-$emailPattern = "/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/";
-$_SESSION['errors']['email']['regex'] = $emailValidation->regex($emailPattern);
-}else{
-    $_SESSION['errors']['email']['required'] = $emailRequiredRuslt
+       $emailPattern = "/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/";
+       $emailRegexRuslt = $emailValidation->regex($emailPattern);
+       if(!empty($emailRegexRuslt)){
+       $_SESSION['errors']['email']['regex'] = $emailRegexRuslt;
+       }
+    }else{
+    $_SESSION['errors']['email']['required'] = $emailRequiredRuslt;
 }
 //هبدا اخد اوبجت من  الكلاس بتاع الفلديشن واسميه باسورد فالديشن واديلو النيم و الفاليو
 //2 هاستخدم من الاوبجت الميود بتاع الاميل ريكويريد و خزنه في باسورد ريكويرد ريزلت
@@ -28,31 +31,45 @@ $_SESSION['errors']['email']['regex'] = $emailValidation->regex($emailPattern);
 
 
 $passwordValidation = new Validation('password',$_POST['password']);
-$_SESSION['errors']['password']['required'] = $passwordValidation->required();
-if(empty($_SESSION['errors']['password']['required'])){
-$passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/";
-$_SESSION['errors']['password']['regex'] = $passwordValidation->regex($passwordPattern);
+$passwordRequiredRuslt = $passwordValidation->required();
+if(empty($passwordRequiredRuslt)){
+         $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/";
+         $passwordRegexRuslt = $passwordValidation->regex($passwordPattern);
+        if(!empty($passwordRegexRuslt)){
+        $_SESSION['errors']['password']['regex'] = $passwordRegexRuslt;
+        }
+}else{
+    $_SESSION['errors']['password']['required'] = $passwordRequiredRuslt;
 }
 //بإذن الله هكمل من اول ما خزنهم في متغيرات وخزن الايرور فقط في السيشن الايرور فقط مش كله
 
 
 //هعمل كونديشن هل السيشن جواه اي ايرور من ايرور الفالديشن ولا لا
-if((isset($_SESSION['email_required']) && $_SESSION['email_required'] == '' )&&
-   (isset($_SESSION['email_regex']) && $_SESSION['email_regex'] == '' )&&
-    (isset($_SESSION['password_required']) && $_SESSION['password_required'] == '' )&&
-    (isset($_SESSION['password_regex']) && $_SESSION['password_regex'] == '' )){
+if(empty($_SESSION['errors'])){
 $userObject = new User();
 $userObject->setemail($_POST['email']);
 $userObject->setPassword($_POST['password']);
 $result = $userObject->login();
 if($result){
-    print_r($result);die;
-
+    $user=$result->fetch_object();
+    if($user->status == 1){
+                 $_SESSION['email'] = $user;
+                 header("location:../../index.php");die;
+    }elseif($user->status == 0){
+            $_SESSION['email'] = $_POST['email'];
+                 header("location:../../check-code.php");die;
     }else{
-        $_SESSION['login_error'] = "Invalid Email or Password";
-    }
+                $_SESSION['errors']['password']['block'] = "your account is blocked";
 
+    }
+    
+    
+    
+}else{
+        $_SESSION['errors']['password']['wrong'] = "Invalid Email or Password";
+    }
 }
+
     header("location:../../login.php");
 //بعدين هاخد اوبجكت من كلاس اليوزر  وبعدين ابدااعطيله ال اميل و الباسورد
 //بعدين اعمل كويريري علشان يبحث عن الاميل و الباسود دول هل هما جوا الداتا بيز ولا لا
