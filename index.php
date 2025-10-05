@@ -1,7 +1,14 @@
 
-   <?php  $title = "home";
+   <?php 
+
+    $title = "home";
    include_once "layouts/header.php";
    include_once "layouts/nav.php";
+
+
+
+
+
 
    ?>
 		<!-- Slider Start -->

@@ -53,7 +53,7 @@ $result = $userObject->login();
 if($result){
     $user=$result->fetch_object();
     if($user->status == 1){
-                 $_SESSION['email'] = $user;
+                 $_SESSION['user'] = $user;
                  header("location:../../index.php");die;
     }elseif($user->status == 0){
             $_SESSION['email'] = $_POST['email'];
