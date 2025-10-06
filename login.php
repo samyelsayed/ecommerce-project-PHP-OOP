@@ -1,6 +1,7 @@
 <?php
 $title = "Login"; 
 include_once 'layouts/header.php';
+include_once 'app/middleware/guest.php'; //عشان مفيش يوزر مسجل دخول يقدر يدخل ع صفحه اللوجين
 include_once 'layouts/nav.php';
 include_once 'layouts/breadcrumb.php';
 ?>
