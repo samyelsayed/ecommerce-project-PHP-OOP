@@ -53,6 +53,12 @@ $result = $userObject->login();
 if($result){
     $user=$result->fetch_object();
     if($user->status == 1){
+                 
+
+                  //هعمل كونديشن للشخص الي اختار ريمببر مي هوا الي هخزن بياناته في الكوكي
+                  if(isset($_POST['remember_me'])){
+                  setcookie('remember_me',$_POST['email'],time()+(60*60*24) * 30 * 12 ,'/');            
+                  }
                  $_SESSION['user'] = $user;
                  header("location:../../index.php");die;
     }elseif($user->status == 0){

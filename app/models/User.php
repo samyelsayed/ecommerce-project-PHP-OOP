@@ -150,14 +150,19 @@ class User extends config implements operations {
         $query = "UPDATE users SET email_verfied_at = '$this->email_verified_at', status = $this->status WHERE email = '$this->email'";
 
         return $this->runDML($query);
-        }
+    }
 
 
       public function login() {
         $query = "SELECT * FROM users WHERE email = '$this->email' AND password = '$this->password'";
         return $this->runDQL($query);
-    }
-    
+     }
+
+      public function getUserByEmail() {
+            $query = "SELECT * FROM users WHERE email = '$this->email'";
+            return $this->runDQL($query);
+
+     }          
 }
 
 
