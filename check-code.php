@@ -1,6 +1,26 @@
 <?php  $title = "check code"; 
 include_once 'layouts/header.php';
+include_once 'app/middleware/guest.php'; //عشان مفيش يوزر مسجل دخول يقدر يدخل ع صفحه اللوجين
 include_once 'app/models/User.php';
+$availablePages = ['register','forget'];
+
+//if url has query string
+if($_GET){
+    //check if ky exeists
+    if(isset($_GET['page'])){
+        //check if value of ky is correct
+        if(!in_array($_GET['page'],$availablePages)){
+            header("location:layouts/errors/404.php");
+
+        }
+       
+    }else{
+          header("location:layouts/errors/404.php");
+        }
+}else{
+    header("location:layouts/errors/404.php");
+    
+}
 
 if($_POST){
     $error = [];
@@ -22,8 +42,12 @@ if($_POST){
             $userObject->setEmailVerifiedAt(date("Y-m-d h:i:s"));
             $updateResult = $userObject->verfiedUser();
               if($updateResult){
-                unset($_SESSION['email']);
+               if($_GET['page'] == 'forget'){
+                header("location:reset-password.php");
+                }elseif($_GET['page'] == 'register'){
+                     unset($_SESSION['email']);
                 header("location:login.php");
+                }
         }else{
            $error['someting'] = "<div class='alert alert-danger'>someting went rong</div>";
         }

@@ -37,7 +37,7 @@ include_once 'layouts/breadcrumb.php';
                                                     <div class="login-toggle-btn">
                                                         <input type="checkbox" name="remember_me">
                                                         <label>Remember me</label>
-                                                        <a href="#">Forgot Password?</a>
+                                                        <a href="forget-password.php">Forgot Password?</a>
                                                     </div>
                                                     <button type="submit" name="login"><span>Login</span></button>
                                                 </div>

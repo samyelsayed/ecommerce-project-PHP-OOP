@@ -74,7 +74,7 @@ $mail = new mail($_POST['email'],$subject,$body);
 $mailResult = $mail->send();
 if($mailResult){
 $_SESSION['email'] = $_POST['email'];
-header("location:check-code.php");
+header("location:check-code.php?page=register");
 }else{
     $error = "<div class='alert alert-danger'>Error Try Again</div>";
 }

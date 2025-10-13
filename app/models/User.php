@@ -162,7 +162,19 @@ class User extends config implements operations {
             $query = "SELECT * FROM users WHERE email = '$this->email'";
             return $this->runDQL($query);
 
-     }          
+     }      
+     public function updateCodeByEmail() { 
+        $query = "UPDATE users SET code = '$this->code' WHERE email = '$this->email'";
+
+        return $this->runDML($query);
+
+     }
+     public function updatePasswordByEmail() { 
+        $query = "UPDATE users SET password = '$this->password' WHERE email = '$this->email'";
+
+        return $this->runDML($query);
+
+     }
 }
 
 
