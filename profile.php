@@ -5,6 +5,42 @@ include_once 'layouts/header.php';
 include_once 'app/middleware/auth.php'; // وحطيتها تحت الهيدر لانه فيها السيشن عشان الي لسا مسجلش دخول ميدخلش ع صفحه البروفايل
 include_once 'layouts/nav.php';
 include_once 'layouts/breadcrumb.php';
+include_once 'app/models/User.php';
+
+
+   $userObject = new User;
+   $userObject->setEmail($_SESSION['user']->email);
+
+$errors = [];
+if(isset($_POST['update-profile'])){
+    print_r($_FILES);die;
+
+
+    //فيما بعد ابقا اعمل فالديشن  للبيانات الي اليوزر يحب يعدلها قبل ما اخزنها في الداتا بيز
+    $errors = [];
+    if(empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['phone']) || empty($_POST['gender']) ){
+      $errors['all'] = "<div class='alert alert-danger'>All fields are required</div>";
+     }
+    
+         $userObject->setFirstName($_POST['first_name']);
+         $userObject->setLastName($_POST['last_name']);
+         $userObject->setPhone($_POST['phone']);
+         $userObject->setPhone($_POST['gender']);
+        if($_FILES['imge']['error'] == 0){
+            //يبقا بعت صورة
+        }            
+       $result = $userObject->update();
+       if($result){
+        $success = "<div class='alert alert-success'>Profile updated successfully</div>";
+       }else{
+        $errors['db'] = "<div class='alert alert-danger'>Something went wrong, please try again</div>";}
+}
+
+
+   $result = $userObject->getUserByEmail();
+   $user = $result->fetch_object();
+    //  print_r($user);
+
 ?>
 
 
@@ -30,47 +66,62 @@ include_once 'layouts/breadcrumb.php';
                                                 <div class="account-info-wrapper">
                                                     <h4>My Account Information</h4>
                                                     <h5>Your Personal Details</h5>
+                                                   <h5 class="text-center"  >     <?php 
+                                                        if(!empty($errors)){
+                                                           foreach($errors as $key => $value){
+                                                            echo $value;
+                                                           }
+                                                        }
+                                                        ?></h5>
+                                                   
                                                 </div>
+                                                <form action="" method="POST" enctype="multipart/form-data">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <div class="col-3 offset-4">
+                                                                <img src="assets/img/users/<?= $user->image ?>" id="image" alt="" class="w-100 rounded-circle" style="cursor: pointer;">
+                                                                <input type="file" name="image" id="file"  class="d-none">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
+                                                    <div class="col-lg-6 col-md-6 mt-5">
                                                         <div class="billing-info">
                                                             <label>First Name</label>
-                                                            <input type="text">
+                                                            <input type="text" name="first_name" value="<?= $user->first_name ?>">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6 col-md-6">
+                                                    <div class="col-lg-6 col-md-6 mt-5">
                                                         <div class="billing-info">
                                                             <label>Last Name</label>
-                                                            <input type="text">
+                                                            <input type="text" name="last_name" value="<?= $user->last_name ?>">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-12 col-md-12">
-                                                        <div class="billing-info">
-                                                            <label>Email Address</label>
-                                                            <input type="email">
-                                                        </div>
-                                                    </div>
+                                                  
                                                     <div class="col-lg-6 col-md-6">
                                                         <div class="billing-info">
-                                                            <label>Telephone</label>
-                                                            <input type="text">
+                                                            <label>phone</label>
+                                                            <input type="text" name="phone" value="<?= $user->phone ?>">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="billing-info">
-                                                            <label>Fax</label>
-                                                            <input type="text">
+                                                   <div class="col-lg-6 col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="Gender">Gender</label>
+                                                            <select name="gender" id="gender" class="form-control">
+                                                            <option value="">Select Gender</option>
+                                                            <option value="m" <?= $user->gender == 'm' ? 'selected' : '' ?>>Male</option>
+                                                            <option value="f" <?php if( $user->gender == 'f'){ echo 'selected';
+                                                            } ?> >Female</option>
+                                                            </select>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="billing-back-btn">
-                                                    <div class="billing-back">
-                                                        <a href="#"><i class="ion-arrow-up-c"></i> back</a>
-                                                    </div>
+                                                   </div>
+
+                                                </div> 
                                                     <div class="billing-btn">
-                                                        <button type="submit">Continue</button>
+                                                        <button type="submit" name="update-profile">Update</button>
                                                     </div>
                                                 </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -166,8 +217,16 @@ include_once 'layouts/breadcrumb.php';
             </div>
         </div>
 		<!-- my account end -->
+         
 
 <?php
 include_once 'layouts/footer.php';
 include_once 'layouts/footer-scripts.php';
 ?>
+
+<script>
+$("#image").click(function(){
+    $("#file").click();
+});
+
+</script>
