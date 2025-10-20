@@ -14,31 +14,34 @@
                     <div class="header-bottom-right">
                         <div class="main-menu">
                             <nav>
-                                <ul>
-                                    <li class="top-hover"><a href="index.php">home</a></li>
-                                    <li><a href="shop.php">Shop</a></li>
-                                    <li class="mega-menu-position top-hover">
-                                        <a href="shop.php">Categories</a>
-                                        <ul class="mega-menu">
-                                            <li>
-                                                <ul>
-                                                    <li class="mega-menu-title">Category 1</li>
-                                                    <li><a href="shop.php?sub=1">Subcategory 1</a></li>
-                                                    <li><a href="shop.php?sub=2">Subcategory 2</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <ul>
-                                                    <li class="mega-menu-title">Category 2</li>
-                                                    <li><a href="shop.php?sub=3">Subcategory 3</a></li>
-                                                    <li><a href="shop.php?sub=4">Subcategory 4</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.php">contact</a></li>
-                                    <li><a href="about-us.php">about</a></li>
-                                </ul>
+                               <ul>
+    <li><a href="index.php">Home</a></li>
+
+    <li><a href="shop.php">Shop</a></li>
+
+    <li class="mega-menu-position top-hover">
+        <a href="#">Categories</a>
+        <ul class="mega-menu">
+            <!-- //get all categories from database and loop here -->
+            <li>
+                <ul>
+                    <li class="mega-menu-title">Categories 01</li>
+                    <li><a href="shop.php">Aconite</a></li>
+                    <li><a href="shop.php">Ageratum</a></li>
+                    <li><a href="shop.php">Allium</a></li>
+                    <li><a href="shop.php">Anemone</a></li>
+                    <li><a href="shop.php">Angelica</a></li>
+                    <li><a href="shop.php">Angelonia</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </li>
+
+    <li><a href="contact.php">Contact</a></li>
+    <li><a href="about-us.php">About</a></li>
+</ul>
+
                             </nav>
                         </div>
                         <div class="header-currency">
@@ -110,10 +113,6 @@
                     <nav id="mobile-menu-active">
                         <ul class="menu-overflow">
                             <li><a href="#">HOME</a>
-                                <ul>
-                                    <li><a href="index.php">home version 1</a></li>
-                                    <li><a href="index-2.php">home version 2</a></li>
-                                </ul>
                             </li>
                             <li><a href="#">pages</a>
                                 <ul>

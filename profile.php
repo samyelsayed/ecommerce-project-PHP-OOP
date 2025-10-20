@@ -6,8 +6,9 @@ include_once 'app/middleware/auth.php'; // وحطيتها تحت الهيدر ل
 include_once 'layouts/nav.php';
 include_once 'layouts/breadcrumb.php';
 include_once 'app/models/User.php';
-
-
+include_once 'app/requests/Validation.php';
+ $errors = [];
+  $error = [];
    $userObject = new User;
    $userObject->setEmail($_SESSION['user']->email);
 
@@ -16,7 +17,7 @@ if(isset($_POST['update-profile'])){
 
 
     //فيما بعد ابقا اعمل فالديشن  للبيانات الي اليوزر يحب يعدلها قبل ما اخزنها في الداتا بيز
-    $errors = [];
+    
     if(empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['phone']) || empty($_POST['gender']) ){
       $errors['all'] = "<div class='alert alert-danger'>All fields are required</div>";
      }
@@ -68,7 +69,67 @@ if(isset($_POST['update-profile'])){
 }
 
 if(isset($_POST['update-password'])){
-    print_r($_POST);
+  
+    //old-password => required , regex , correct=data base هعمله سلكت من الداتا بيز
+    $passwordValidation = new Validation('old-password',$_POST['old-password']);
+    $passwordValidationRequired = $passwordValidation->required();
+    if(empty($passwordValidationRequired)){
+        $Pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/";
+        $passwordValidationRegex = $passwordValidation->regex($Pattern);
+        if(!empty($passwordValidationRegex)){
+            $error['old-password']['regex'] = "<div class ='alert alert-danger'> Old Password Is Not Correct.</div>" ;
+        }else{
+            $userObject->setPassword($_POST['old-password']);
+            $result = $userObject->verifyOldPassword();
+            if(!$result){
+                $error['old-password']['correct'] = "<div class ='alert alert-danger'> Old password is incorrect</div>" ;
+            }
+        }
+
+    }else{
+         $error['old-password']['required']= "<div class='alert alert-danger'>The old password field is required</div>";
+    }
+    //new-password => required , regex
+    $newPasswordValidation = new Validation('new-password',$_POST['new-password']);
+    $newPasswordValidationRequired = $newPasswordValidation->required();
+    if(empty($newPasswordValidationRequired)){
+        $Pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/";
+        $newPasswordValidationRegex = $newPasswordValidation->regex($Pattern);
+        if(empty($newPasswordValidationRegex)){
+          $newPasswordValidationcofirmed = $newPasswordValidation->confirmed($_POST['password-confirm']);
+          if(!empty($newPasswordValidationcofirmed)){
+            $error['new-password']['confirmed']= "<div class='alert alert-danger'>The new password no smetya with password confirm </div>";
+          }
+        }else{
+          $error['new-password']['regex'] = "<div class ='alert alert-danger'> Minimum eight and maximum 15 characters, at least one uppercase letter, one lowercase letter, one number and one special character.</div>" ;
+
+        }
+    }else{
+         $error['new-password']['required']= "<div class='alert alert-danger'>The new password field is required</div>";
+    }
+
+    //password-confirm => required , match new-password
+    $newPasswordConfermValidation = new Validation ('password-confirm',$_POST['password-confirm']);
+    $newPasswordConfermValidationRequired = $newPasswordConfermValidation->required();
+    if(!empty($newPasswordConfermValidationRequired)){
+            $error['password-confirm']['required']= "<div class='alert alert-danger'>The new password confirm field is required</div>";
+
+    }
+    //if no validation errors
+    if(empty($error)){
+            $userObject->setPassword($_POST['new-password']);
+            $result = $userObject->updatePasswordByEmail();
+            
+            if($result){
+                //print succsess massage
+                $successed = "<div class='alert alert-success'>password updated successfully </div>";
+            }else{
+                //print error massage واعرضهم في الفورم الخاصة بالباسورد تحت
+                $error['db'] = "<div class='alert alert-danger'>Something went wrong, please try again</div>";
+            }
+
+    }
+   
 }
 
    $result = $userObject->getUserByEmail();
@@ -176,6 +237,8 @@ if(isset($_POST['update-password'])){
                                                     <h4>Change Password</h4>
                                                     <h5>Your Password</h5>
                                                 </div>
+                                               
+
                                             <form action="" method="post">
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12">
@@ -184,18 +247,33 @@ if(isset($_POST['update-password'])){
                                                             <input type="password" name="old-password">
                                                         </div>
                                                     </div>
+                                                    <?php if(isset($_POST['update-password']) && isset($error['old-password']) && !empty($error['old-password'])){
+                                                        foreach($error['old-password'] as $key => $value){
+                                                            echo $value;
+                                                        }
+                                                    } ?>
                                                     <div class="col-lg-12 col-md-12">
                                                         <div class="billing-info">
                                                             <label>New Password</label>
                                                             <input type="password" name="new-password">
                                                         </div>
                                                     </div>
+                                                    <?php if(!empty($error['new-password'])){
+                                                        foreach($error['new-password'] as $key => $value){
+                                                            echo $value;
+                                                        }
+                                                    } ?>
                                                     <div class="col-lg-12 col-md-12">
                                                         <div class="billing-info">
                                                             <label>Password Confirm</label>
                                                             <input type="password" name="password-confirm">
                                                         </div>
                                                     </div>
+                                                    <?php if(!empty($error['password-confirm'])){
+                                                        foreach($error['password-confirm'] as $key => $value){
+                                                            echo $value;
+                                                        }
+                                                    } ?>
                                                 </div>
                                                 <div class="billing-back-btn">
                                                    
