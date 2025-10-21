@@ -1,3 +1,27 @@
+<?php
+//اعمل انكلود ل موديل الكاتجوري
+include_once 'app/models/Category.php';
+include_once 'app/models/Subcategory.php';
+$objectCategory = new Category ();//اخد اوبجكت منه
+$objectCategory->setStatus(1);
+$categoryResult = $objectCategory->read(); 
+
+$objectSubcategory = new Subcategory ();//اخد اوبجكت منه
+$objectSubcategory->setStatus(1);
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
 
 <header class="header-area gray-bg clearfix">
     <div class="header-bottom">
@@ -14,31 +38,56 @@
                     <div class="header-bottom-right">
                         <div class="main-menu">
                             <nav>
-                                <ul>
-                                    <li class="top-hover"><a href="index.php">home</a></li>
-                                    <li><a href="shop.php">Shop</a></li>
-                                    <li class="mega-menu-position top-hover">
-                                        <a href="shop.php">Categories</a>
-                                        <ul class="mega-menu">
-                                            <li>
-                                                <ul>
-                                                    <li class="mega-menu-title">Category 1</li>
-                                                    <li><a href="shop.php?sub=1">Subcategory 1</a></li>
-                                                    <li><a href="shop.php?sub=2">Subcategory 2</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <ul>
-                                                    <li class="mega-menu-title">Category 2</li>
-                                                    <li><a href="shop.php?sub=3">Subcategory 3</a></li>
-                                                    <li><a href="shop.php?sub=4">Subcategory 4</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.php">contact</a></li>
-                                    <li><a href="about-us.php">about</a></li>
-                                </ul>
+                               <ul>
+    <li><a href="index.php">Home</a></li>
+
+    <li><a href="shop.php">Shop</a></li>
+
+    <li class="mega-menu-position top-hover">
+        <a href="#">Categories</a>
+        <ul class="mega-menu">
+            <!-- //get all categories from database and loop here -->
+             <?php if($categoryResult){
+               $categories = $categoryResult->fetch_all(MYSQLI_ASSOC);
+               foreach($categories as $key => $category){ 
+
+             ?> 
+            <li>
+                <ul>
+                    <li class="mega-menu-title"><?= $category['name_en'] ?></li>
+                    <?php 
+                            //لازم علشان اعرض الصب كاتجوري اكتب الكويري هنا لان الكويري
+                            //  دا لية انبوت وهوا ال هي دي بتاع الكاتجوري ودا موجود معايا وبيتغير جو اللوب هنا
+                            //وكل للفه هديله كاتجوري اي دي جديد هيقوم الكويري متغير ويرجع اوت بوت لصب كويري مختلف
+                            $objectSubcategory->setCategory_id($category['id']);
+                            $subCategoryResult = $objectSubcategory->getSubsByCatId();
+                            if($subCategoryResult){
+                                $subCategories = $subCategoryResult->fetch_all(MYSQLI_ASSOC);
+                                foreach($subCategories as $key => $subCategory){ 
+                                    ?>
+                                     <li><a href="shop.php"><?= $subCategory['name_en'] ?></a></li>
+                                    <?php
+
+                                }
+                          }
+                    ?>
+
+
+                </ul>
+            </li>
+             <?php 
+                    }
+                }
+             ?>
+
+
+        </ul>
+    </li>
+
+    <li><a href="contact.php">Contact</a></li>
+    <li><a href="about-us.php">About</a></li>
+</ul>
+
                             </nav>
                         </div>
                         <div class="header-currency">
@@ -110,10 +159,6 @@
                     <nav id="mobile-menu-active">
                         <ul class="menu-overflow">
                             <li><a href="#">HOME</a>
-                                <ul>
-                                    <li><a href="index.php">home version 1</a></li>
-                                    <li><a href="index-2.php">home version 2</a></li>
-                                </ul>
                             </li>
                             <li><a href="#">pages</a>
                                 <ul>

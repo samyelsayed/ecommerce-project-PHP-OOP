@@ -136,18 +136,20 @@ class User extends config implements operations {
     }
     public function update() {
         $image = NULL;
-        if(! $this->image) //علشان في صفحة البروفايل احنا عاملين كونديشن لو في صورة وتمام يخزنها في الفريبول بتاع يوزر اوبجكت في البروبيرت دي
-        {
-            $image = ", image = '$this->image'";
+
+        if(!empty($this->image)){
+            $image = " , image = '$this->image' ";
         }
-       $image = image = '$this->image';
-        $query = "UPDATE users SET first_name = '$this->first_name', last_name = '$this->last_name',
-     phone = '$this->phone  , gender = '$this->gender' WHERE email = '$this->email'";
-        return $this->runDML($query);
+
+        $query = "UPDATE users SET first_name = '$this->first_name', last_name = '$this->last_name',phone = '$this->phone',
+                gender = '$this->gender' $image WHERE email = '$this->email'";
+                return $this->runDML($query);
+
     }
-    public function delete() {
+    
+     public function delete() {
         
-    }
+     }
 
     public function checkcode() {
         $query = "SELECT * FROM users WHERE email = '$this->email' AND code = '$this->code'";
@@ -183,6 +185,10 @@ class User extends config implements operations {
         return $this->runDML($query);
 
      }
+    public function verifyOldPassword(){
+        $query = "SELECT * FROM users WHERE email = '$this->email' AND password = '$this->password' ";
+        return $this->runDQL($query);
+    }
 }
 
 
