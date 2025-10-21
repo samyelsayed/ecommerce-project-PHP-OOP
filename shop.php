@@ -2,6 +2,11 @@
    include_once "layouts/header.php";
    include_once "layouts/nav.php";
    include_once "layouts/breadcrumb.php";
+   include_once 'app/models/Product.php';
+
+
+   $productObject = new Product;
+   $productObject->setStatus(1);
    ?>
 		<!-- Shop Page Area Start -->
         <div class="shop-page-area ptb-100">
