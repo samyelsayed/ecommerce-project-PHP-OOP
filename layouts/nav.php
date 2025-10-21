@@ -1,3 +1,27 @@
+<?php
+//اعمل انكلود ل موديل الكاتجوري
+include_once 'app/models/Category.php';
+include_once 'app/models/Subcategory.php';
+$objectCategory = new Category ();//اخد اوبجكت منه
+$objectCategory->setStatus(1);
+$categoryResult = $objectCategory->read(); 
+
+$objectSubcategory = new Subcategory ();//اخد اوبجكت منه
+$objectSubcategory->setStatus(1);
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
 
 <header class="header-area gray-bg clearfix">
     <div class="header-bottom">
@@ -23,17 +47,39 @@
         <a href="#">Categories</a>
         <ul class="mega-menu">
             <!-- //get all categories from database and loop here -->
+             <?php if($categoryResult){
+               $categories = $categoryResult->fetch_all(MYSQLI_ASSOC);
+               foreach($categories as $key => $category){ 
+
+             ?> 
             <li>
                 <ul>
-                    <li class="mega-menu-title">Categories 01</li>
-                    <li><a href="shop.php">Aconite</a></li>
-                    <li><a href="shop.php">Ageratum</a></li>
-                    <li><a href="shop.php">Allium</a></li>
-                    <li><a href="shop.php">Anemone</a></li>
-                    <li><a href="shop.php">Angelica</a></li>
-                    <li><a href="shop.php">Angelonia</a></li>
+                    <li class="mega-menu-title"><?= $category['name_en'] ?></li>
+                    <?php 
+                            //لازم علشان اعرض الصب كاتجوري اكتب الكويري هنا لان الكويري
+                            //  دا لية انبوت وهوا ال هي دي بتاع الكاتجوري ودا موجود معايا وبيتغير جو اللوب هنا
+                            //وكل للفه هديله كاتجوري اي دي جديد هيقوم الكويري متغير ويرجع اوت بوت لصب كويري مختلف
+                            $objectSubcategory->setCategory_id($category['id']);
+                            $subCategoryResult = $objectSubcategory->getSubsByCatId();
+                            if($subCategoryResult){
+                                $subCategories = $subCategoryResult->fetch_all(MYSQLI_ASSOC);
+                                foreach($subCategories as $key => $subCategory){ 
+                                    ?>
+                                     <li><a href="shop.php"><?= $subCategory['name_en'] ?></a></li>
+                                    <?php
+
+                                }
+                          }
+                    ?>
+
+
                 </ul>
             </li>
+             <?php 
+                    }
+                }
+             ?>
+
 
         </ul>
     </li>

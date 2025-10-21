@@ -173,4 +173,11 @@ class Subcategory extends config implements operations {
 
         return $this;
     }
+
+
+    public function getSubsByCatId( )
+    {
+        $query = "SELECT id, name_en FROM `subcategories` WHERE `status` = $this->status AND `categorie_id` = $this->category_id ";
+        return $this->runDQL($query);
+    }
 }

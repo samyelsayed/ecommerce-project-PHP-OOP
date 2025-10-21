@@ -148,7 +148,23 @@ class Category extends config implements operations {
 
     }
     public function read () {
-        
+       $query = "
+                    SELECT 
+                        `categories`.`id`,
+                        `categories`.`name_en`,
+                        COUNT(`subcategories`.`id`) AS `subs_count`
+                    FROM 
+                        `categories`
+                    INNER JOIN 
+                        `subcategories` 
+                        ON `categories`.`id` = `subcategories`.`categorie_id`
+                    WHERE 
+                        `categories`.`status` = $this->status
+                    GROUP BY 
+                        `subcategories`.`categorie_id`
+                ";
+
+        return $this->runDQL($query);
     }
     public function update () {
         
