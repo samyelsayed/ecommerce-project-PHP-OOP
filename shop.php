@@ -7,6 +7,8 @@
 
    $productObject = new Product;
    $productObject->setStatus(1);
+   $productResult = $productObject->read(); 
+
    ?>
 		<!-- Shop Page Area Start -->
         <div class="shop-page-area ptb-100">
@@ -44,12 +46,19 @@
                             <div class="product-grid product-view pb-20">
                                 <div class="row">
                                     <!-- //loop on products -->
-                                     <!-- بنفس الخطوات بتاعت الكاتجوريز ولا حاجة هتزيد وا حاجة هتقل -->
-                                    <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                    <!-- بنفس الخطوات بتاعت الكاتجوريز ولا حاجة هتزيد وا حاجة هتقل -->
+                                    <!-- //بعدين اتاكد هل  الراري دي فيها بيانات ولا لا ولو فيها اعملها فيتش -->
+                                   <?php 
+                                   if($productResult){
+                                    $products = $productResult ->fetch_all(MYSQLI_ASSOC);
+                                    foreach($products as $index => $product){
+                                        ?>
+
+                                                                            <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.php">
-                                                    <img alt="" src="assets/img/product/product-1.jpg">
+                                                    <img alt="" src="assets/img/product/<?= $product['image'] ?>">
                                                 </a>
                                                 <span>-30%</span>
                                                 <div class="product-action">
@@ -68,7 +77,7 @@
 												<div class="product-hover-style">
 													<div class="product-title">
 														<h4>
-															<a href="product-details.php">Nature Close Tea</a>
+															<a href="product-details.php"><?= $product['name_en'] ?></a>
 														</h4>
 													</div>
 													<div class="cart-hover">
@@ -76,19 +85,17 @@
 													</div>
 												</div>
 												<div class="product-price-wrapper">
-													<span>$100.00 -</span>
-													<span class="product-price-old">$120.00 </span>
+													<span><?= $product['price'] ?> EGP</span>
 												</div>
 											</div>
                                             <div class="product-list-details">
                                                 <h4>
-                                                    <a href="product-details.php">Nature Close Tea</a>
+                                                    <a href="product-details.php"><?= $product['name_en '] ?></a>
                                                 </h4>
                                                 <div class="product-price-wrapper">
-                                                    <span>$100.00</span>
-                                                    <span class="product-price-old">$120.00 </span>
+                                                    <span><?= $product['price'] ?> EGP</span>
                                                 </div>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipic it, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                                <p><?= $product['desc_en'] ?> </p>
                                                 <div class="shop-list-cart-wishlist">
                                                     <a href="#" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
                                                     <a href="#" title="Add To Cart"><i class="ion-ios-shuffle-strong"></i></a>
@@ -99,6 +106,15 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <?php
+                                    }
+                                   }
+                                   
+                                   
+                                   
+                                   ?>
+                                    
                                 </div>
                             </div>
                             <div class="pagination-total-pages">
@@ -125,36 +141,41 @@
                                 <h4 class="shop-sidebar-title">Shop By Categories</h4>
                                 <div class="shop-catigory">
                                     <ul id="faq">
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-1">Morning Tea <i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-1" class="panel-collapse collapse show">
-                                                <li><a href="#">Green</a></li>
-                                                <li><a href="#">Herbal</a></li>
-                                                <li><a href="#">Loose </a></li>
-                                                <li><a href="#">Mate</a></li>
-                                                <li><a href="#">Organic</a></li>
+
+                                 <!-- //نفس الي في الناف بس كان حصل مشكله علشان كنت عملت فيتش ل  اراري انا عاملها فيتش -->
+                                     <?php if(!empty($categoryResult)){
+                                         foreach($categories as $key => $category){ 
+
+                                        ?> 
+                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-<?= $key ?>"><?= $category['name_en'] ?> <i class="ion-ios-arrow-down"></i></a>
+                                            <ul id="shop-catigory-<?= $key ?>" class="panel-collapse collapse ">
+                                                <?php 
+                                                        //لازم علشان اعرض الصب كاتجوري اكتب الكويري هنا لان الكويري
+                                                        //  دا لية انبوت وهوا ال هي دي بتاع الكاتجوري ودا موجود معايا وبيتغير جو اللوب هنا
+                                                        //وكل للفه هديله كاتجوري اي دي جديد هيقوم الكويري متغير ويرجع اوت بوت لصب كويري مختلف
+                                                        $objectSubcategory->setCategory_id($category['id']);
+                                                        $subCategoryResult = $objectSubcategory->getSubsByCatId();
+                                                        if($subCategoryResult){
+                                                            $subCategories = $subCategoryResult->fetch_all(MYSQLI_ASSOC);
+                                                            foreach($subCategories as $key => $subCategory){ 
+                                                                ?>
+                                                                <li><a href="shop.php"><?= $subCategory['name_en'] ?></a></li>
+                                                                <?php
+
+                                                            }
+                                                    }
+                                                ?>
+
+
                                             </ul>
                                         </li>
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-2">Tea Trends<i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-2" class="panel-collapse collapse">
-                                                <li><a href="#">Pu'Erh</a></li>
-                                                <li><a href="#">Black</a></li>
-                                                <li><a href="#">White</a></li>
-                                                <li><a href="#">Yellow Tea</a></li>
-                                                <li><a href="#">Puer Tea</a></li>
-                                            </ul>
-                                        </li>
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-3">Most Tea Map <i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-3" class="panel-collapse collapse">
-                                                <li><a href="#">Green Tea</a></li>
-                                                <li><a href="#">Oolong Tea</a></li>
-                                                <li><a href="#">Black Tea</a></li>
-                                                <li><a href="#">Pu'erh Tea </a></li>
-                                                <li><a href="#">Dark Tea</a></li>
-                                            </ul>
-                                        </li>
-                                        <li> <a href="#">Herbal Tea</a> </li>
-                                        <li> <a href="#">Rooibos Tea</a></li>
-                                        <li> <a href="#">Organic Tea</a></li>
+                                        <?php 
+                                                }
+                                            }
+                                        ?>
+
+
+
                                     </ul>
                                 </div>
                             </div>

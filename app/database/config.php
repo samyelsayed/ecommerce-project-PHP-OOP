@@ -6,7 +6,7 @@
     private $hostname = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $databasename = 'smsmecommerce';
+    private $databasename = 'ecommerce';
     private $con;
   public function __construct() {
     $this->con = new mysqli($this->hostname, $this->username, $this->password, $this->databasename);
