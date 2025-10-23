@@ -4,7 +4,7 @@ include_once __DIR__.'/../database/config.php';
  include_once __DIR__.'/../database/operations.php'; 
 
 class Subcategory extends config implements operations {
-
+    private $id;
     private $name_en;
     private $name_ar;
     private $status;
@@ -179,5 +179,32 @@ class Subcategory extends config implements operations {
     {
         $query = "SELECT id, name_en FROM `subcategories` WHERE `status` = $this->status AND `categorie_id` = $this->category_id ";
         return $this->runDQL($query);
+    }
+
+    public function searchOnId( )
+    {
+        $query = "SELECT id, name_en FROM `subcategories` WHERE `status` = $this->status AND id = $this->id ";
+        return $this->runDQL($query);
+    }
+
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

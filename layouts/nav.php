@@ -65,7 +65,7 @@ $objectSubcategory->setStatus(1);
                                 $subCategories = $subCategoryResult->fetch_all(MYSQLI_ASSOC);
                                 foreach($subCategories as $key => $subCategory){ 
                                     ?>
-                                     <li><a href="shop.php"><?= $subCategory['name_en'] ?></a></li>
+                                     <li><a href="shop.php?sub=<?= $subCategory['id'] ?>"><?= $subCategory['name_en'] ?></a></li>
                                     <?php
 
                                 }

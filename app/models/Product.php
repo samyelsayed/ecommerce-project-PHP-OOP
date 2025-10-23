@@ -26,6 +26,13 @@ class Product extends config implements operations {
         $query = "SELECT id,name_en,price,desc_en,image from products WHERE status=$this->status ORDER BY price ASC,quantity DESC,name_en ASC";
         return $this->runDQL($query);
     }
+
+    public function getProductsBySubs () {
+        $query = "SELECT id,name_en,price,desc_en,image from products WHERE status=$this->status AND subcatgories_id =$this->subcategory_id
+        ORDER BY price ASC,quantity DESC,name_en ASC";
+        return $this->runDQL($query);
+
+    }
     public function update () {
         
     }

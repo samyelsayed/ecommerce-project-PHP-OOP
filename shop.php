@@ -7,7 +7,29 @@
 
    $productObject = new Product;
    $productObject->setStatus(1);
-   $productResult = $productObject->read(); 
+   if($_GET){
+      if($_GET['sub']){           //علشان لو اليوزر شغل دماغه ولعب ف الكويري استرنج وغير الكي
+        if(is_numeric($_GET['sub'])){
+                   $objectSubcategory->setId($_GET['sub']);          //علشان لو شغل دماغه لو في رفم الكويري استرنج
+                   $objectSubcategoryData = $objectSubcategory->searchOnId();
+                        if($objectSubcategoryData){
+                        $productObject->setSubcategory_id($_GET['sub']); 
+                        $productResult = $productObject->getProductsBySubs();
+                        }else{
+                        $productResult = $productObject->read();     //get all products
+                        }
+
+        }else{
+            header("Location:layouts/errors/404.php");
+        }    
+      }else{
+            $productResult = $productObject->read();     //get all products
+
+      }
+
+  }else{
+     $productResult = $productObject->read();            //get all products
+  }
 
    ?>
 		<!-- Shop Page Area Start -->
@@ -54,7 +76,7 @@
                                     foreach($products as $index => $product){
                                         ?>
 
-                                                                            <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                    <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.php">
@@ -109,7 +131,9 @@
 
                                     <?php
                                     }
-                                   }
+                                   }else{
+                                                echo"<div class='alert alert-warning text-center w-100'>No Products Yet</div>";
+                                            }
                                    
                                    
                                    
@@ -159,7 +183,7 @@
                                                             $subCategories = $subCategoryResult->fetch_all(MYSQLI_ASSOC);
                                                             foreach($subCategories as $key => $subCategory){ 
                                                                 ?>
-                                                                <li><a href="shop.php"><?= $subCategory['name_en'] ?></a></li>
+                                                                <li><a href="shop.php?sub=<?= $subCategory['id'] ?>"><?= $subCategory['name_en'] ?></a></li>
                                                                 <?php
 
                                                             }
