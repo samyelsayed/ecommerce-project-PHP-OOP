@@ -4,6 +4,36 @@
    include_once "layouts/breadcrumb.php";
    include_once 'app/models/Product.php';
 
+   
+
+
+ if($_GET){
+  
+    if(isset($_GET['id'])){           //علشان لو اليوزر شغل دماغه ولعب ف الكويري استرنج وغير الكي
+        if(is_numeric($_GET['id'])){
+            $productObject = new Product ;
+            $productObject->setId($_GET['id']);          //علشان لو شغل دماغه لو في رفم الكويري استرنج
+            $productObject->setStatus(1);
+            $productData = $productObject->searchOnId();
+                if($productData){
+                        $product = $productData->fetch_object();
+                }else{
+                        header("Location:layouts/errors/404.php");die;
+                    }
+        }else{
+                 header("Location:layouts/errors/404.php");die;
+        }    
+    }else{
+              header("Location:layouts/errors/404.php");die;
+    }
+
+  }else{
+     header("Location:layouts/errors/404.php");die;
+  }
+
+
+
+
 ?>
 		<!-- Product Deatils Area Start -->
         <div class="product-details pt-100 pb-95">
@@ -11,33 +41,12 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-img">
-                            <img class="zoompro" src="assets/img/product-details/product-detalis-l1.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg" alt="zoom"/>
-                            <div id="gallery" class="mt-20 product-dec-slider owl-carousel">
-                                <a data-image="assets/img/product-details/product-detalis-l1.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s1.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l2.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl2.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s2.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l3.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl3.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s3.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l4.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl4.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s4.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l5.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl5.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s5.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l2.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl2.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s2.jpg" alt="">
-                                </a>
-                            </div>
-                            <span>-29%</span>
+                            <img class="zoompro" src="assets/img/product/<?= $product->image?>" />                       
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-content">
-                            <h4>Nature Close Tea</h4>
+                            <h4><?= $product->name_en?>"</h4>
                             <div class="rating-review">
                                 <div class="pro-dec-rating">
                                     <i class="ion-android-star-outline theme-star"></i>
@@ -112,7 +121,6 @@
                 </div>
             </div>
         </div>
-		<!-- Product Deatils Area End -->
         <div class="description-review-area pb-70">
             <div class="container">
                 <div class="description-review-wrapper">

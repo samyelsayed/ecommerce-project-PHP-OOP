@@ -33,6 +33,13 @@ class Product extends config implements operations {
         return $this->runDQL($query);
 
     }
+    
+
+    public function searchOnId () {
+        $query = "SELECT * from products WHERE status=$this->status AND id =$this->id";
+        return $this->runDQL($query);
+
+    }
     public function update () {
         
     }
