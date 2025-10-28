@@ -62,18 +62,26 @@
                                     </ul>
                                 </div>
                             </div>
-                            <span>$260.00</span>
+                            <span><?= $product->price?> EPG</span>
+                                <?php
+                                if ($product->quantity == 0) {
+                                    $message = "Out Of Stock";
+                                    $color = "danger";
+                                } elseif ($product->quantity >= 1 && $product->quantity <= 5) {
+                                    $message = "In Stock (" . $product->quantity . ")";
+                                    $color = "warning";
+                                } else {
+                                    $message = "In Stock";
+                                    $color = "success";
+                                }
+                                ?>
+
                             <div class="in-stock">
-                                <p>Available: <span>In stock</span></p>
+                                <p>Available: <span class= "text-<?=$color?>"><?=$message?></span></p>
                             </div>
-                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
+                            <p><?= $product->desc_en?> </p>
                             <div class="pro-dec-feature">
-                                <ul>
-                                    <li><input type="checkbox"> Protection Plan: <span> 2 year  $4.99</span></li>
-                                    <li><input type="checkbox"> Remote Holder: <span> $9.99</span></li>
-                                    <li><input type="checkbox"> Koral Alexa Voice Remote Case: <span> Red  $16.99</span></li>
-                                    <li><input type="checkbox"> Amazon Basics HD Antenna: <span>25 Mile  $14.99</span></li>
-                                </ul>
+
                             </div>
                             <div class="quality-add-to-cart">
                                 <div class="quality">
@@ -99,23 +107,6 @@
                                     <li><a href="#">Organic </a></li>
                                 </ul>
                             </div>
-                            <div class="pro-dec-categories">
-                                <ul>
-                                    <li class="categories-title">Tags: </li>
-                                    <li><a href="#"> Oolong, </a></li>
-                                    <li><a href="#"> Pu'erh,</a></li>
-                                    <li><a href="#"> Dark,</a></li>
-                                    <li><a href="#"> Special </a></li>
-                                </ul>
-                            </div>
-                            <div class="pro-dec-social">
-                                <ul>
-                                    <li><a class="tweet" href="#"><i class="ion-social-twitter"></i> Tweet</a></li>
-                                    <li><a class="share" href="#"><i class="ion-social-facebook"></i> Share</a></li>
-                                    <li><a class="google" href="#"><i class="ion-social-googleplus-outline"></i> Google+</a></li>
-                                    <li><a class="pinterest" href="#"><i class="ion-social-pinterest"></i> Pinterest</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -126,35 +117,16 @@
                 <div class="description-review-wrapper">
                     <div class="description-review-topbar nav text-center">
                         <a class="active" data-toggle="tab" href="#des-details1">Description</a>
-                        <a data-toggle="tab" href="#des-details2">Tags</a>
+ 
                         <a data-toggle="tab" href="#des-details3">Review</a>
                     </div>
                     <div class="tab-content description-review-bottom">
                         <div id="des-details1" class="tab-pane active">
                             <div class="product-description-wrapper">
-                                <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam est usus legentis in iis qui facit eorum claritatem. </p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-                                <ul>
-                                    <li>-  Typi non habent claritatem insitam</li>
-                                    <li>-  Est usus legentis in iis qui facit eorum claritatem. </li>
-                                    <li>-  Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius.</li>
-                                    <li>-  Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</li>
-                                </ul>
+                            <p><?= $product->desc_en?> </p>
                             </div>
                         </div>
-                        <div id="des-details2" class="tab-pane">
-                            <div class="product-anotherinfo-wrapper">
-                                <ul>
-                                    <li><span>Tags:</span></li>
-                                    <li><a href="#"> Green,</a></li>
-                                    <li><a href="#"> Herbal,</a></li>
-                                    <li><a href="#"> Loose,</a></li>
-                                    <li><a href="#"> Mate,</a></li>
-                                    <li><a href="#"> Organic ,</a></li>
-                                    <li><a href="#"> special</a></li>
-                                </ul>
-                            </div>
-                        </div>
+
                         <div id="des-details3" class="tab-pane">
                             <div class="rattings-wrapper">
                                 <div class="sin-rattings">
