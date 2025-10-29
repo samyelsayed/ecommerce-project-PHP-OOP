@@ -30,8 +30,9 @@
   }else{
      header("Location:layouts/errors/404.php");die;
   }
-
-
+ echo "<pre>";
+ print_r($product);
+ echo "<pre>";
 
 
 ?>
@@ -56,8 +57,12 @@
                                     <i class="ion-android-star-outline"></i>
                                 </div>
                                 <div class="pro-dec-review">
-                                    <ul>
-                                        <li>32 Reviews </li>
+                                     <ul>
+<!--                                         
+                                        // سطر الخبره لان كل الي عملته ف يبي اتش بي اني مجرد عملت ايكو لان المعلمه كانت في الكويري الي سهل عليا الشغل هنا
+                                        //كدا خليت الابلكيشن كا بي اتش بي يعرض فقط  
+--->
+                                        <li><?= $product->reviews_count?> Reviews </li>
                                         <li> Add Your Reviews</li>
                                     </ul>
                                 </div>
