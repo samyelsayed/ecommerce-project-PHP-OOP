@@ -30,10 +30,8 @@
   }else{
      header("Location:layouts/errors/404.php");die;
   }
- echo "<pre>";
- print_r($product);
- echo "<pre>";
 
+print_r($product);
 
 ?>
 		<!-- Product Deatils Area Start -->
@@ -50,11 +48,15 @@
                             <h4><?= $product->name_en?>"</h4>
                             <div class="rating-review">
                                 <div class="pro-dec-rating">
-                                    <i class="ion-android-star-outline theme-star"></i>
-                                    <i class="ion-android-star-outline theme-star"></i>
-                                    <i class="ion-android-star-outline theme-star"></i>
-                                    <i class="ion-android-star-outline theme-star"></i>
-                                    <i class="ion-android-star-outline"></i>
+                                    <?php
+                                    for($i =1; $i <= 5; $i++ ){
+                                        if($i <= $product->reviews_avg){
+                                            echo "<i class='ion-android-star-outline theme-star'></i>";
+                                        }else{
+                                              echo "<i class='ion-android-star-outline'></i>";
+                                        }
+                                    }
+                                    ?>
                                 </div>
                                 <div class="pro-dec-review">
                                      <ul>
@@ -63,7 +65,7 @@
                                         //كدا خليت الابلكيشن كا بي اتش بي يعرض فقط  
 --->
                                         <li><?= $product->reviews_count?> Reviews </li>
-                                        <li> Add Your Reviews</li>
+                                        <li> Add Your Reviews</li> 
                                     </ul>
                                 </div>
                             </div>
@@ -105,11 +107,10 @@
                             <div class="pro-dec-categories">
                                 <ul>
                                     <li class="categories-title">Categories:</li>
-                                    <li><a href="#">Green,</a></li>
-                                    <li><a href="#">Herbal, </a></li>
-                                    <li><a href="#">Loose,</a></li>
-                                    <li><a href="#">Mate,</a></li>
-                                    <li><a href="#">Organic </a></li>
+                                    <li><a href="#"><?= $product->categories_name_en?>,</a></li>
+                                    <li><a href="#"><?= $product->subcategories_name_en?>, </a></li>
+                                    <li><a href="#"><?= $product->brands_name_en?> </a></li>
+
                                 </ul>
                             </div>
                         </div>
