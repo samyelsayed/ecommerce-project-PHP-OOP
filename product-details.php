@@ -3,7 +3,7 @@
    include_once "layouts/nav.php";
    include_once "layouts/breadcrumb.php";
    include_once 'app/models/Product.php';
-
+   include_once 'app/models/Specs.php';
    
 
 
@@ -14,6 +14,9 @@
             $productObject = new Product ;
             $productObject->setId($_GET['id']);          //علشان لو شغل دماغه لو في رفم الكويري استرنج
             $productObject->setStatus(1);
+            $specsObject = new Specs;
+            $specsObject->setId($_GET['id']);
+
             $productData = $productObject->searchOnId();
                 if($productData){
                         $product = $productData->fetch_object();
@@ -31,7 +34,7 @@
      header("Location:layouts/errors/404.php");die;
   }
 
-print_r($product);
+// print_r($product);
 
 ?>
 		<!-- Product Deatils Area Start -->
@@ -88,7 +91,17 @@ print_r($product);
                             </div>
                             <p><?= $product->desc_en?> </p>
                             <div class="pro-dec-feature">
-
+                                <ul>
+                                <?php
+                               $specsData = $specsObject->getSpecs();
+                                if($specsData){
+                                    $specs = $specsData->fetch_all(MYSQLI_ASSOC);
+                                    foreach($specs as $key=>$spec ){
+                                        echo "<li> {$spec['specs_en']} </li>";
+                                    }
+                                }
+                                ?>
+                                </ul>
                             </div>
                             <div class="quality-add-to-cart">
                                 <div class="quality">
@@ -108,7 +121,7 @@ print_r($product);
                                 <ul>
                                     <li class="categories-title">Categories:</li>
                                     <li><a href="#"><?= $product->categories_name_en?>,</a></li>
-                                    <li><a href="#"><?= $product->subcategories_name_en?>, </a></li>
+                                    <li><a href="shop.php?sub=<?= $product->subcatgories_id?>"><?= $product->subcategories_name_en?>, </a></li>
                                     <li><a href="#"><?= $product->brands_name_en?> </a></li>
 
                                 </ul>
