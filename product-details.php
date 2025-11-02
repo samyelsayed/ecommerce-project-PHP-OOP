@@ -4,7 +4,7 @@
    include_once "layouts/breadcrumb.php";
    include_once 'app/models/Product.php';
    include_once 'app/models/Specs.php';
-   
+   include_once 'app/models/Reviews.php';
 
 
  if($_GET){
@@ -16,7 +16,8 @@
             $productObject->setStatus(1);
             $specsObject = new Specs;
             $specsObject->setId($_GET['id']);
-
+            $reviewsObject = new Reviews;
+            $reviewsObject->setProduct_id($_GET['id']);            
             $productData = $productObject->searchOnId();
                 if($productData){
                         $product = $productData->fetch_object();
@@ -148,42 +149,42 @@
 
                         <div id="des-details3" class="tab-pane">
                             <div class="rattings-wrapper">
-                                <div class="sin-rattings">
-                                    <div class="star-author-all">
-                                        <div class="ratting-star f-left">
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <span>(5)</span>
-                                        </div>
-                                        <div class="ratting-author f-right">
-                                            <h3>Potanu Leos</h3>
-                                            <span>12:24</span>
-                                            <span>9 March 2018</span>
-                                        </div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost rud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost.</p>
-                                </div>
-                                <div class="sin-rattings">
-                                    <div class="star-author-all">
-                                        <div class="ratting-star f-left">
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <span>(5)</span>
-                                        </div>
-                                        <div class="ratting-author f-right">
-                                            <h3>Kahipo Khila</h3>
-                                            <span>12:24</span>
-                                            <span>9 March 2018</span>
-                                        </div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost rud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost.</p>
-                                </div>
+                                                <!-- Reviews -->
+                                                <?php
+                                                
+
+                                                $resultReview = $reviewsObject->getReview();
+                                                if($resultReview ){
+                                                        $reviews =$resultReview->fetch_all(MYSQLI_ASSOC);
+                                                        foreach($reviews as $ket=> $review ){
+                                                    ?> 
+                                            <div class="sin-rattings">
+                                                <div class="star-author-all">
+                                                    <div class="ratting-star f-left">
+                                                        <?php
+                                                        for($i=1; $i <=$review['value']; $i++ ){
+                                                         echo    "<i class='ion-star theme-color'></i>";
+                                                        }
+                                                         for($i=1; $i <= 5-$review['value']; $i++ ){
+                                                         echo "<i class='ion-android-star-outline'></i>";
+                                                        }
+
+                                                        ?>
+                                                        <span><?= $review['value'] ?></span>
+                                                    </div>
+                                                    <div class="ratting-author f-right">
+                                                        <h3><?= $review['full_name'] ?></h3>
+                                                        <span><?= $review['created_at'] ?></span>
+                                                    </div>
+                                                </div>
+                                                <p><?= $review['comment'] ?></p>
+                                            </div>
+                                                                                             <?php
+                                                       }
+                                                }else{
+                                                    echo "<div class='alert alert-warning'>No Reviews Found</div>";
+                                                }
+                                                ?>
                             </div>
                             <div class="ratting-form-wrapper">
                                 <h3>Add your Comments :</h3>

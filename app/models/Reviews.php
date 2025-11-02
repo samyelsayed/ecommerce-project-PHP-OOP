@@ -2,7 +2,7 @@
 
 include_once __DIR__.'/../database/config.php';
  include_once __DIR__.'/../database/operations.php';
-class Specs extends config implements operations {
+class Reviews extends config implements operations {
 
     private $product_id;
     private $user_id;
@@ -150,7 +150,7 @@ class Specs extends config implements operations {
 
         return $this;
     }
-    public function getReveiw(){
+    public function getReview(){
         $query = "SELECT 
                     `reviews`.*, 
                     CONCAT(`users`.`first_name`, ' ', `users`.`last_name`) AS `full_name`
@@ -161,7 +161,7 @@ class Specs extends config implements operations {
                 ON  
                     `users`.`id` = `reviews`.`user_id`
                 WHERE 
-                    `reviews`.`product_id` =$this->id;
+                    `reviews`.`product_id` =$this->product_id;
             ";
         return $this->runDQL($query);
     }
