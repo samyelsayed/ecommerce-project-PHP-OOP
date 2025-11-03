@@ -186,6 +186,9 @@
                                                 }
                                                 ?>
                             </div>
+                            <?php
+                            if(isset($_SESSION['user']) && !empty($_SESSION['user'])){
+                                ?>
                             <div class="ratting-form-wrapper">
                                 <h3>Add your Comments :</h3>
                                 <div class="ratting-form">
@@ -221,6 +224,11 @@
                                     </form>
                                 </div>
                             </div>
+
+                                <?php
+                            }
+                            ?>
+
                         </div>
                     </div>
                 </div>

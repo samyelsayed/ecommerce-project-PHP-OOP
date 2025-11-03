@@ -166,5 +166,4 @@ class Reviews extends config implements operations {
         return $this->runDQL($query);
     }
 
-
 }
