@@ -40,6 +40,15 @@ class Product extends config implements operations {
         return $this->runDQL($query);
 
     }
+
+   public function getNewProducts () {
+        $query =  "SELECT `id`,`name_en`,`price`,`desc_en`,`image` FROM `products` 
+        WHERE status = 1
+        ORDER BY `created_at`DESC
+        LIMIT 4";
+        return $this->runDQL($query);
+
+    }
     public function update () {
         
     }

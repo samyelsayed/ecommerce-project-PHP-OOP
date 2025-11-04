@@ -165,5 +165,26 @@ class Reviews extends config implements operations {
             ";
         return $this->runDQL($query);
     }
+     
+    public function mostedProductReview(){ 
+        $query = "SELECT  
+                `products`.`id`,
+                `products`.`name_en`,
+                `products`.`price`,
+                `products`.`desc_en`,
+                `products`.`image`,
+                COUNT(`reviews`.`value`) AS total_reviews,
+                AVG(`reviews`.`value`) AS avg_rating
+                FROM `products`
+                JOIN `reviews` 
+                ON `products`.`id` = `reviews`.`product_id`
+                WHERE `products`.`status` = 1 
+                GROUP BY `products`.`id`
+                ORDER BY COUNT(`reviews`.`value`) DESC, AVG(`reviews`.`value`) DESC
+                LIMIT 4;
+                ";
+                return $this->runDQL($query);
+    }
+
 
 }
